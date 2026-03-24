@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>MIUI Theme Studio Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090e;--s1:#0d1018;--s2:#131720;--s3:#18202e;--bd:#1d2535;--bd2:#252f42;
+  --red:#ff3b3b;--red2:#ff6b35;--red-g:rgba(255,59,59,.22);
+  --cy:#00d4ff;--gr:#00e07f;--yw:#ffd60a;
+  --t1:#edf0f7;--t2:#7a8ba5;--t3:#364256;
+  --f:'Plus Jakarta Sans',sans-serif;--f2:'Rajdhani',sans-serif;
+  --r:13px;
+  /* phone theme vars */
+  --pw:290px;--ph:590px;
+  --pt-bg:#0b1120;--pt-text:#ffffff;--pt-text2:rgba(255,255,255,.55);
+  --pt-accent:#ff3b3b;--pt-wall:linear-gradient(170deg,#0e1a35 0%,#152545 40%,#0a1220 100%);
+  --pt-iconbg:rgba(255,255,255,.11);--pt-dock:rgba(255,255,255,.09);
+  --pt-card:rgba(18,28,50,.88);--pt-notif:rgba(14,22,40,.9);
+  --pt-status:rgba(255,255,255,.9);--pt-shape:50%;
+  --pt-font:'Plus Jakarta Sans',sans-serif;--pt-clock-size:54px;--pt-clock-w:200;
+  --pt-icon-size:38px;--pt-dock-r:22px;--pt-sb-h:28px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--f);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 800px 500px at 75% 10%,rgba(255,59,59,.04) 0%,transparent 70%),
+             radial-gradient(ellipse 500px 400px at 5% 90%,rgba(0,212,255,.03) 0%,transparent 70%);
+  pointer-events:none;z-index:0}
+
+/* ═══ TOPBAR ═══ */
+.topbar{height:52px;background:rgba(13,16,24,.97);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 14px;gap:10px;
+  position:sticky;top:0;z-index:200;backdrop-filter:blur(20px);flex-shrink:0}
+.logo{font-family:var(--f2);font-size:18px;font-weight:700;letter-spacing:3px;
+  background:linear-gradient(135deg,var(--red),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap;flex-shrink:0;line-height:1}
+.logo small{display:block;font-size:8px;letter-spacing:2.5px;color:var(--t3);-webkit-text-fill-color:var(--t3)}
+.tb-name{flex:1;min-width:0;max-width:180px;background:var(--s2);border:1px solid var(--bd);
+  border-radius:7px;color:var(--t1);font-family:var(--f);font-size:12px;padding:5px 10px}
+.tb-name:focus{outline:none;border-color:var(--red)}
+.tb-sel{background:var(--s2);border:1px solid var(--bd);border-radius:7px;color:var(--t1);
+  font-family:var(--f);font-size:11px;padding:5px 8px;cursor:pointer}
+.tb-sel:focus{outline:none}
+.tb-acts{display:flex;gap:5px;margin-left:auto;flex-shrink:0}
+.btn{display:flex;align-items:center;gap:4px;padding:6px 11px;border-radius:7px;border:none;
+  cursor:pointer;font-family:var(--f);font-size:11px;font-weight:600;transition:all .18s;white-space:nowrap}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--bd2)}
+.btn-ghost:hover{border-color:var(--red);color:var(--red)}
+.btn-red{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff}
+.btn-red:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--red-g)}
+.btn-cy{background:transparent;color:var(--cy);border:1px solid var(--cy)}
+.btn-cy:hover{background:rgba(0,212,255,.08)}
+
+/* ═══ DESKTOP LAYOUT ═══ */
+.d-wrap{display:grid;grid-template-columns:52px 220px 1fr 320px;height:calc(100vh - 52px);position:relative;z-index:1}
+
+/* Rail */
+.rail{background:var(--s1);border-right:1px solid var(--bd);display:flex;flex-direction:column;
+  align-items:center;padding:8px 0;gap:1px;overflow-y:auto}
+.rb{width:40px;height:40px;border-radius:9px;background:transparent;border:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--t3);transition:all .14s;gap:2px;font-size:7.5px;font-family:var(--f);
+  letter-spacing:.2px;position:relative}
+.rb svg{width:17px;height:17px}
+.rb:hover{background:var(--s2);color:var(--t2)}
+.rb.on{background:rgba(255,59,59,.13);color:var(--red)}
+.rb.on::after{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:52%;background:var(--red);border-radius:0 3px 3px 0}
+.r-sep{width:26px;height:1px;background:var(--bd);margin:4px 0}
+
+/* Sidebar */
+.sb{background:var(--s1);border-right:1px solid var(--bd);overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.sb-h{padding:11px 13px 7px;font-family:var(--f2);font-size:10px;font-weight:600;
+  letter-spacing:2px;color:var(--t3);text-transform:uppercase;
+  display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.sb-h:hover{color:var(--t2)}
+.sb-h .a{transition:transform .2s}
+.sb-h.op .a{transform:rotate(90deg)}
+.sb-items{padding:0 7px 7px}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;cursor:pointer;
+  font-size:12px;color:var(--t2);transition:all .13s;position:relative}
+.ni:hover{background:var(--s2);color:var(--t1)}
+.ni.on{background:rgba(255,59,59,.1);color:var(--red)}
+.ni.on::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:52%;background:var(--red);border-radius:0 2px 2px 0}
+.ni svg{width:13px;height:13px;flex-shrink:0}
+.ni span{flex:1}
+.badge{background:var(--s3);border-radius:8px;font-size:9px;padding:1px 5px;color:var(--t3)}
+
+/* Editor */
+.editor{overflow-y:auto;background:var(--bg);scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.ep{padding:18px;max-width:780px}
+.st{font-family:var(--f2);font-size:19px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.st .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 9px var(--red);flex-shrink:0}
+.ss{color:var(--t3);font-size:11.5px;margin-bottom:18px}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.ct{font-family:var(--f2);font-size:11px;font-weight:600;letter-spacing:1.5px;color:var(--red);
+  text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.cg{margin-bottom:12px}.cg:last-child{margin-bottom:0}
+.cl{font-size:11px;color:var(--t2);margin-bottom:4px;font-weight:500}
+.es{display:none;animation:fu .2s ease}.es.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* Controls */
+.cr{display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--bd2);
+  border-radius:7px;padding:6px 10px;cursor:pointer;transition:border-color .2s;position:relative}
+.cr:hover{border-color:var(--red)}
+.cs{width:24px;height:24px;border-radius:5px;border:1.5px solid rgba(255,255,255,.08);flex-shrink:0}
+.cv{font-family:var(--f2);font-size:12px;letter-spacing:.8px;flex:1;color:var(--t1)}
+.cr input[type=color]{position:absolute;opacity:0;width:0;height:0}
+input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:var(--s3);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--red);cursor:pointer;box-shadow:0 0 6px var(--red-g)}
+.rv{font-family:var(--f2);font-size:12px;color:var(--red);min-width:36px;text-align:right;font-weight:600}
+.rr{display:flex;align-items:center;gap:9px}
+.sel{width:100%;background:var(--s2);border:1px solid var(--bd2);border-radius:7px;color:var(--t1);
+  font-family:var(--f);font-size:11.5px;padding:7px 10px;cursor:pointer;transition:border-color .2s;
+  appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23364256' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;padding-right:26px}
+.sel:focus{outline:none;border-color:var(--red)}
+.tr{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}
+.tr:last-child{border-bottom:none;padding-bottom:0}
+.tl{font-size:12px;color:var(--t2)}
+.tl small{display:block;font-size:10px;color:var(--t3);margin-top:1px}
+.tog{width:37px;height:20px;background:var(--s3);border-radius:10px;border:1px solid var(--bd2);
+  cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
+.tog::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;
+  background:var(--t3);top:2px;left:2px;transition:all .2s}
+.tog.on{background:rgba(255,59,59,.25);border-color:var(--red)}
+.tog.on::after{left:19px;background:var(--red)}
+.ti{width:100%;background:var(--s2);border:1px solid var(--bd2);border-radius:7px;color:var(--t1);
+  font-family:var(--f);font-size:12px;padding:7px 10px;transition:border-color .2s}
+.ti:focus{outline:none;border-color:var(--red)}
+.uz{border:2px dashed var(--bd2);border-radius:9px;padding:18px;text-align:center;
+  cursor:pointer;transition:all .2s;position:relative}
+.uz:hover{border-color:var(--red);background:rgba(255,59,59,.03)}
+.uz input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.uz-i{font-size:22px;margin-bottom:5px}
+.uz-t{font-size:11px;color:var(--t3)}.uz-t strong{color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd2);
+  border-radius:6px;padding:4px 8px;cursor:pointer;transition:all .15s;font-size:11px;color:var(--t2)}
+.chip:hover{border-color:var(--red);color:var(--t1)}
+.chip.on{border-color:var(--red);color:var(--red);background:rgba(255,59,59,.08)}
+.chip .dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.shape-g{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.sho{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;
+  background:var(--s2);border:1px solid var(--bd2);border-radius:9px;cursor:pointer;transition:all .14s}
+.sho:hover{border-color:var(--red)}
+.sho.on{background:rgba(255,59,59,.1);border-color:var(--red)}
+.sh-demo{width:38px;height:38px;background:var(--red);opacity:.65}
+.sh-l{font-size:10.5px;color:var(--t2)}.sho.on .sh-l{color:var(--red)}
+
+/* ═══ PREVIEW PANEL ═══ */
+.prev-panel{background:var(--s1);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
+.prev-head{padding:11px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.prev-title{font-family:var(--f2);font-size:10px;letter-spacing:2px;color:var(--t3);text-transform:uppercase}
+.p-tabs{display:flex;gap:3px;flex-wrap:wrap}
+.pt{padding:3px 8px;border-radius:5px;font-size:10px;cursor:pointer;border:none;
+  font-family:var(--f);background:transparent;color:var(--t3);transition:all .14s}
+.pt.on{background:var(--s2);color:var(--t1)}
+.phone-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:14px;overflow:hidden}
+.p-status-bar{padding:8px 13px 4px;border-top:1px solid var(--bd);font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;flex-shrink:0}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--gr);box-shadow:0 0 5px var(--gr)}
+
+/* ═══ PHONE MOCKUP ═══ */
+.phone{width:var(--pw);height:var(--ph);border-radius:40px;
+  border:7px solid #111620;background:#000;position:relative;
+  box-shadow:0 0 0 1px #080c12,inset 0 0 0 1px rgba(255,255,255,.03),
+             0 20px 60px rgba(0,0,0,.75),0 0 0 7px #0c1018;
+  overflow:hidden;flex-shrink:0}
+.p-notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);
+  width:58px;height:11px;background:#111620;border-radius:6px;z-index:30}
+.p-cam{position:absolute;top:12px;right:calc(50% - 40px);
+  width:5px;height:5px;background:#08090e;border-radius:50%;z-index:31}
+.p-screen{width:100%;height:100%;border-radius:33px;overflow:hidden;
+  position:relative;background:var(--pt-bg);transition:background .35s}
+.p-wp{position:absolute;inset:0;background:var(--pt-wall);
+  background-size:cover;background-position:center;transition:all .4s}
+.p-ui{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;overflow:hidden}
+
+/* MIUI Status Bar */
+.miui-sb{height:var(--pt-sb-h);display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;flex-shrink:0;transition:all .3s}
+.miui-sb-time{font-size:10px;font-weight:600;color:var(--pt-status);font-family:var(--pt-font);transition:all .3s}
+.miui-sb-right{display:flex;align-items:center;gap:4px}
+.miui-sb-net{font-size:6px;color:var(--pt-status);opacity:.7;text-align:center;line-height:1.2}
+.miui-sb-icons{display:flex;align-items:center;gap:3px}
+.sig-bars{display:flex;gap:1px;align-items:flex-end}
+.sig-bars span{background:var(--pt-status);border-radius:1px;width:2px;opacity:.85}
+.sig-bars span:nth-child(1){height:4px}
+.sig-bars span:nth-child(2){height:6px}
+.sig-bars span:nth-child(3){height:8px}
+.sig-bars span:nth-child(4){height:10px}
+.wifi-ic{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:.5px}
+.wifi-ic span{background:var(--pt-status);border-radius:.5px;opacity:.85}
+.wifi-ic span:nth-child(1){width:4px;height:1.5px}
+.wifi-ic span:nth-child(2){width:6px;height:1.5px}
+.wifi-ic span:nth-child(3){width:8px;height:1.5px}
+.bat-ic{display:flex;align-items:center;gap:1.5px}
+.bat-body{width:15px;height:8px;border:1.5px solid var(--pt-status);border-radius:2px;
+  position:relative;opacity:.9;overflow:hidden}
+.bat-fill{position:absolute;left:1px;top:1px;bottom:1px;border-radius:1px;
+  background:var(--pt-status);width:80%;transition:width .3s}
+.bat-tip{width:2px;height:4px;background:var(--pt-status);border-radius:0 1px 1px 0;opacity:.7}
+.bat-pct{font-size:7px;color:var(--pt-status);opacity:.85;font-weight:600}
+
+/* HOME SCREEN */
+.miui-home{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.miui-clock-wrap{padding:22px 0 6px;text-align:center;flex-shrink:0}
+.miui-clock{font-size:var(--pt-clock-size);font-weight:var(--pt-clock-w);
+  color:var(--pt-text);font-family:var(--pt-font);letter-spacing:-2px;
+  line-height:1;transition:all .3s;text-shadow:0 2px 20px rgba(0,0,0,.3)}
+.miui-date{font-size:10px;color:var(--pt-text2);margin-top:3px;font-family:var(--pt-font);transition:all .3s}
+.miui-weather{font-size:9px;color:var(--pt-text2);opacity:.7;margin-top:1px}
+.miui-search{margin:8px 14px 4px;background:rgba(255,255,255,.1);border-radius:22px;
+  padding:6px 12px;display:flex;align-items:center;gap:6px;
+  border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px)}
+.miui-search span{font-size:8px;color:rgba(255,255,255,.4);flex:1}
+.miui-search-i{font-size:11px;opacity:.4}
+.miui-icons{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:6px 10px;flex:1}
+.miui-icon{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.miui-icon-box{width:var(--pt-icon-size);height:var(--pt-icon-size);border-radius:var(--pt-shape);
+  background:var(--pt-iconbg);display:flex;align-items:center;justify-content:center;
+  font-size:18px;transition:all .3s;border:1px solid rgba(255,255,255,.05)}
+.miui-icon-lbl{font-size:7px;color:var(--pt-text2);font-family:var(--pt-font);text-align:center;transition:all .3s;white-space:nowrap;overflow:hidden;max-width:100%}
+
+/* DOCK */
+.miui-dock{margin:0 10px 8px;border-radius:var(--pt-dock-r);
+  background:var(--pt-dock);padding:7px 12px;
+  display:flex;justify-content:space-around;align-items:center;
+  backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.05);
+  transition:all .3s;flex-shrink:0}
+.miui-dock-icon{width:34px;height:34px;border-radius:calc(var(--pt-shape) * .8);
+  background:var(--pt-iconbg);display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all .3s;cursor:pointer}
+
+/* NAV BAR */
+.miui-nav{height:28px;display:flex;align-items:center;justify-content:center;gap:16px;flex-shrink:0;
+  padding-bottom:4px}
+.nav-back{font-size:10px;color:var(--pt-text2);opacity:.5}
+.nav-home-pill{width:30px;height:4px;border-radius:2px;background:var(--pt-text2);opacity:.6;transition:all .3s}
+.nav-rec{font-size:10px;color:var(--pt-text2);opacity:.5}
+
+/* LOCK SCREEN */
+.miui-lock{flex:1;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.lock-clock{text-align:center;padding-top:24px}
+.lock-time{font-size:var(--pt-clock-size);font-weight:var(--pt-clock-w);
+  color:var(--pt-text);font-family:var(--pt-font);letter-spacing:-2px;line-height:1;
+  text-shadow:0 4px 30px rgba(0,0,0,.4);transition:all .3s}
+.lock-date{font-size:11px;color:var(--pt-text2);margin-top:5px;font-family:var(--pt-font);transition:all .3s}
+.lock-weather{font-size:9px;color:var(--pt-text2);opacity:.6;margin-top:2px}
+.lock-notifs{width:100%;padding:0 12px;margin-top:12px;display:flex;flex-direction:column;gap:5px}
+.lock-notif{background:var(--pt-card);border-radius:12px;padding:8px 10px;
+  border:1px solid rgba(255,255,255,.05);backdrop-filter:blur(12px)}
+.lock-notif-row{display:flex;align-items:center;gap:5px}
+.lock-notif-ico{width:12px;height:12px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:7px;flex-shrink:0}
+.lock-notif-app{font-size:7px;font-weight:600;color:var(--pt-text2)}
+.lock-notif-time{margin-left:auto;font-size:6.5px;color:var(--pt-text2);opacity:.5}
+.lock-notif-title{font-size:8px;font-weight:600;color:var(--pt-text);margin-top:2px}
+.lock-notif-body{font-size:7px;color:var(--pt-text2);opacity:.7}
+.lock-bottom{margin-top:auto;padding-bottom:8px;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%}
+.lock-shortcuts{display:flex;justify-content:space-between;padding:0 24px;width:100%}
+.lock-shortcut{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08)}
+.lock-unlock{text-align:center}
+.lock-unlock-pill{width:50px;height:4px;border-radius:2px;background:rgba(255,255,255,.3);margin:0 auto 3px}
+.lock-swipe{font-size:7px;letter-spacing:2px;color:var(--pt-text2);opacity:.5}
+.lock-fp{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;font-size:14px;opacity:.6}
+
+/* NOTIFICATION SHADE */
+.miui-shade{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.shade-handle{width:36px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;margin:8px auto 6px}
+.shade-notifs{padding:0 8px;display:flex;flex-direction:column;gap:5px;flex:1;overflow:hidden}
+.shade-card{background:var(--pt-notif);border-radius:14px;padding:9px 11px;
+  border:1px solid rgba(255,255,255,.04);backdrop-filter:blur(14px)}
+.shade-card-top{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.shade-app-ico{width:13px;height:13px;border-radius:3.5px;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0}
+.shade-app-name{font-size:7.5px;font-weight:600;color:var(--pt-text2)}
+.shade-time{margin-left:auto;font-size:6.5px;color:var(--pt-text2);opacity:.4}
+.shade-title{font-size:9px;font-weight:600;color:var(--pt-text)}
+.shade-body{font-size:7.5px;color:var(--pt-text2);opacity:.7;margin-top:1px}
+.shade-actions{display:flex;gap:4px;margin-top:6px}
+.shade-btn{background:rgba(255,255,255,.08);border-radius:6px;padding:3px 7px;
+  font-size:7px;color:var(--pt-text2);cursor:pointer}
+
+/* QUICK SETTINGS */
+.miui-qs{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.qs-user{display:flex;align-items:center;gap:8px;padding:8px 12px 4px}
+.qs-avatar{width:28px;height:28px;border-radius:50%;background:var(--pt-accent);display:flex;align-items:center;justify-content:center;font-size:12px}
+.qs-user-name{font-size:9px;font-weight:600;color:var(--pt-text)}
+.qs-user-sub{font-size:7.5px;color:var(--pt-text2);opacity:.6}
+.qs-bright{display:flex;align-items:center;gap:6px;padding:4px 12px}
+.qs-bright-ico{font-size:9px;opacity:.5;color:var(--pt-text2)}
+.qs-bright-bar{flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;position:relative}
+.qs-bright-fill{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:rgba(255,255,255,.6);width:65%}
+.qs-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:4px 8px}
+.qs-tile{background:var(--pt-card);border-radius:10px;padding:7px 5px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.03);transition:all .18s}
+.qs-tile.on{background:rgba(255,59,59,.18);border-color:rgba(255,59,59,.25)}
+.qs-tile-ico{font-size:14px}
+.qs-tile-lbl{font-size:6px;color:var(--pt-text2);text-align:center;line-height:1.2}
+.qs-tile.on .qs-tile-lbl{color:var(--pt-text)}
+.qs-media{margin:4px 8px;background:var(--pt-card);border-radius:12px;padding:8px 10px;
+  display:flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.03)}
+.qs-media-art{width:24px;height:24px;border-radius:5px;background:linear-gradient(135deg,#ff4444,#ff7043);display:flex;align-items:center;justify-content:center;font-size:10px}
+.qs-media-info{flex:1}
+.qs-media-title{font-size:7.5px;font-weight:600;color:var(--pt-text)}
+.qs-media-artist{font-size:6.5px;color:var(--pt-text2);opacity:.6}
+.qs-media-ctrls{display:flex;gap:4px;align-items:center}
+.qs-ctrl-btn{font-size:10px;color:var(--pt-text2);opacity:.8;cursor:pointer}
+
+/* SETTINGS SCREEN */
+.miui-settings{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.settings-header{padding:8px 12px 4px;display:flex;align-items:center;gap:7px}
+.settings-back{font-size:14px;color:var(--pt-text2);cursor:pointer}
+.settings-title{font-size:12px;font-weight:600;color:var(--pt-text)}
+.settings-search{margin:4px 10px 6px;background:rgba(255,255,255,.07);border-radius:16px;
+  padding:5px 10px;display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.06)}
+.settings-search span{font-size:7.5px;color:rgba(255,255,255,.3)}
+.settings-list{overflow-y:auto;flex:1;padding:0 8px 8px}
+.settings-section{margin-bottom:6px}
+.settings-sec-title{font-size:8px;font-weight:600;color:var(--pt-accent);letter-spacing:1px;
+  text-transform:uppercase;padding:5px 4px 3px}
+.settings-item{display:flex;align-items:center;gap:8px;padding:8px 8px;
+  background:var(--pt-card);border-radius:9px;margin-bottom:3px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.03)}
+.settings-item-ico{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.settings-item-text{flex:1}
+.settings-item-label{font-size:8px;font-weight:600;color:var(--pt-text);line-height:1.3}
+.settings-item-sub{font-size:7px;color:var(--pt-text2);opacity:.55}
+.settings-item-arr{font-size:9px;color:var(--pt-text2);opacity:.3}
+.settings-tog{width:24px;height:13px;border-radius:7px;border:1px solid rgba(255,255,255,.15);position:relative;flex-shrink:0}
+.settings-tog.on{background:var(--pt-accent);border-color:var(--pt-accent)}
+.settings-tog::after{content:'';position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;top:1px;left:1px;transition:left .2s}
+.settings-tog.on::after{left:12px}
+
+/* RECENTS */
+.miui-recents{flex:1;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.recents-title{font-size:8px;letter-spacing:2px;color:var(--pt-text2);opacity:.4;text-transform:uppercase;margin:10px 0 8px}
+.recent-cards{display:flex;gap:8px;padding:0 16px;overflow-x:auto;width:100%}
+.recent-card{width:110px;background:var(--pt-card);border-radius:12px;overflow:hidden;flex-shrink:0;
+  border:1px solid rgba(255,255,255,.04)}
+.recent-card-header{height:70px;background:linear-gradient(135deg,#1a2040,#2a3060);display:flex;align-items:center;justify-content:center;font-size:20px}
+.recent-card-footer{padding:5px 8px;display:flex;align-items:center;gap:5px}
+.recent-card-ico{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px}
+.recent-card-name{font-size:7px;color:var(--pt-text2)}
+.recents-clear{margin-top:10px;background:rgba(255,255,255,.06);border-radius:16px;padding:5px 14px;font-size:8px;color:var(--pt-text2);cursor:pointer}
+
+/* ══ MOBILE ══ */
+.mob-only{display:none}
+@media(max-width:768px){
+  .d-wrap{display:none}
+  .mob-only{display:flex;flex-direction:column;height:calc(100vh - 52px)}
+  .tb-sel{display:none}
+  .mob-content{flex:1;overflow-y:auto}
+  .mob-bnav{position:fixed;bottom:0;left:0;right:0;
+    background:rgba(13,16,24,.97);border-top:1px solid var(--bd);
+    display:flex;padding:6px 0 env(safe-area-inset-bottom,6px);z-index:100;backdrop-filter:blur(20px)}
+  .mbn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+    background:none;border:none;cursor:pointer;padding:5px 4px;color:var(--t3);font-family:var(--f);font-size:8px;transition:color .14s}
+  .mbn svg{width:20px;height:20px}
+  .mbn.on{color:var(--red)}
+  .mob-sec{display:none;padding:12px 12px 80px}
+  .mob-sec.on{display:block}
+  .mob-phone-wrap{display:flex;flex-direction:column;align-items:center;padding:12px 12px 0}
+  :root{--pw:240px;--ph:490px}
+  .mob-prev-tabs{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;width:100%}
+  .mpt{padding:5px 12px;border-radius:16px;font-size:11px;cursor:pointer;border:none;
+    font-family:var(--f);background:var(--s2);color:var(--t2);white-space:nowrap;
+    border:1px solid var(--bd)}
+  .mpt.on{background:rgba(255,59,59,.13);color:var(--red);border-color:var(--red)}
+  .mob-sub-tabs{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+  .mst{padding:4px 11px;border-radius:14px;font-size:11px;cursor:pointer;border:none;
+    font-family:var(--f);background:var(--s2);color:var(--t3);white-space:nowrap;border:1px solid var(--bd)}
+  .mst.on{background:rgba(255,59,59,.12);color:var(--red);border-color:var(--red)}
+  .mob-sub-sec{display:none}.mob-sub-sec.on{display:block}
+}
+@media(min-width:769px){.tb-sel{display:block}}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP BAR ═══ -->
+<header class="topbar">
+  <div class="logo">MIUI<small>THEME STUDIO</small></div>
+  <input class="tb-name" id="themeName" value="My Theme" placeholder="Theme name…">
+  <select class="tb-sel sel" id="devSel" style="max-width:175px" onchange="document.getElementById('dDev').textContent=this.value.slice(0,22)">
+    <optgroup label="Redmi Note 13">
+      <option>Redmi Note 13 Pro+ 5G</option><option>Redmi Note 13 Pro 5G</option>
+      <option>Redmi Note 13 Pro 4G</option><option>Redmi Note 13 5G</option><option>Redmi Note 13 4G</option>
+    </optgroup>
+    <optgroup label="Redmi Note 12">
+      <option>Redmi Note 12 Pro+ 5G</option><option>Redmi Note 12 Pro 5G</option>
+      <option>Redmi Note 12 5G</option><option>Redmi Note 12 4G</option><option>Redmi Note 12S</option>
+    </optgroup>
+    <optgroup label="Redmi Note 11/10">
+      <option>Redmi Note 11 Pro+</option><option>Redmi Note 11 Pro</option><option>Redmi Note 11S</option>
+      <option>Redmi Note 10 Pro Max</option><option>Redmi Note 10 Pro</option><option>Redmi Note 10S</option>
+    </optgroup>
+    <optgroup label="Redmi">
+      <option>Redmi 13C</option><option>Redmi 12C</option><option>Redmi A3</option><option>Redmi A2</option><option>Redmi 10C</option>
+    </optgroup>
+    <optgroup label="Redmi K Series">
+      <option>Redmi K70 Pro</option><option>Redmi K70</option><option>Redmi K60 Ultra</option>
+      <option>Redmi K60 Pro</option><option>Redmi K50 Gaming</option><option>Redmi K40 Gaming</option>
+    </optgroup>
+    <optgroup label="POCO">
+      <option>POCO X6 Pro</option><option>POCO X6</option><option>POCO F5 Pro</option>
+      <option>POCO F5</option><option>POCO M6 Pro</option><option>POCO C65</option>
+    </optgroup>
+  </select>
+  <div class="tb-acts">
+    <button class="btn btn-ghost" onclick="importTheme()">⬆ Import</button>
+    <button class="btn btn-cy" onclick="exportJSON()">JSON</button>
+    <button class="btn btn-red" onclick="exportMTZ()">⬇ .mtz</button>
+  </div>
+</header>
+
+<!-- ═══ DESKTOP ═══ -->
+<div class="d-wrap">
+  <!-- Rail -->
+  <nav class="rail" id="rail">
+    <button class="rb on" onclick="railGo(this,'colors')" title="Colors">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></svg>Colors
+    </button>
+    <button class="rb" onclick="railGo(this,'wall')" title="Wallpaper">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><circle cx="8" cy="9" r="2" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg>Wall
+    </button>
+    <button class="rb" onclick="railGo(this,'icons')" title="Icons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Icons
+    </button>
+    <button class="rb" onclick="railGo(this,'fonts')" title="Fonts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>Font
+    </button>
+    <div class="r-sep"></div>
+    <button class="rb" onclick="railGo(this,'statusbar')" title="Status Bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="5" rx="1"/><line x1="6" y1="6.5" x2="9" y2="6.5"/><line x1="17" y1="6.5" x2="20" y2="6.5"/></svg>Status
+    </button>
+    <button class="rb" onclick="railGo(this,'lockscreen')" title="Lock Screen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Lock
+    </button>
+    <button class="rb" onclick="railGo(this,'notifs')" title="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Notifs
+    </button>
+    <button class="rb" onclick="railGo(this,'quicksettings')" title="Quick Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>QS
+    </button>
+    <button class="rb" onclick="railGo(this,'animations')" title="Animations">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12s2-5 7-5 7 5 7 5-2 5-7 5-7-5-7-5z"/><circle cx="12" cy="12" r="3"/></svg>Anim
+    </button>
+    <button class="rb" onclick="railGo(this,'sounds')" title="Sounds">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>Sound
+    </button>
+    <button class="rb" onclick="railGo(this,'aod')" title="AOD">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>AOD
+    </button>
+    <div class="r-sep"></div>
+    <button class="rb" onclick="railGo(this,'export')" title="Export">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export
+    </button>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="sb" id="sb"></aside>
+
+  <!-- Editor -->
+  <main class="editor"><div class="ep" id="ep"></div></main>
+
+  <!-- Preview -->
+  <aside class="prev-panel">
+    <div class="prev-head">
+      <div class="prev-title">Live Preview</div>
+      <div class="p-tabs">
+        <button class="pt on" onclick="pTab(this,'home')">Home</button>
+        <button class="pt" onclick="pTab(this,'lock')">Lock</button>
+        <button class="pt" onclick="pTab(this,'notif')">Notifs</button>
+        <button class="pt" onclick="pTab(this,'qs')">QS</button>
+        <button class="pt" onclick="pTab(this,'settings')">Settings</button>
+        <button class="pt" onclick="pTab(this,'recents')">Recents</button>
+      </div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone"><div class="p-notch"></div><div class="p-cam"></div>
+        <div class="p-screen" id="dScreen"><div class="p-wp" id="dWP"></div><div class="p-ui" id="dUI"></div></div>
+      </div>
+    </div>
+    <div class="p-status-bar"><div class="sdot"></div>Live · <span id="dDev">Redmi Note 13 Pro+</span></div>
+  </aside>
+</div>
+
+<!-- ═══ MOBILE ═══ -->
+<div class="mob-only">
+  <div class="mob-content">
+    <!-- Preview -->
+    <div class="mob-sec on" id="m-preview">
+      <div class="mob-phone-wrap">
+        <div class="mob-prev-tabs" id="mPTabs">
+          <button class="mpt on" onclick="mPTab(this,'home')">Home</button>
+          <button class="mpt" onclick="mPTab(this,'lock')">Lock</button>
+          <button class="mpt" onclick="mPTab(this,'notif')">Notifs</button>
+          <button class="mpt" onclick="mPTab(this,'qs')">Quick Settings</button>
+          <button class="mpt" onclick="mPTab(this,'settings')">Settings</button>
+          <button class="mpt" onclick="mPTab(this,'recents')">Recents</button>
+        </div>
+        <div class="phone"><div class="p-notch"></div><div class="p-cam"></div>
+          <div class="p-screen" id="mScreen"><div class="p-wp" id="mWP"></div><div class="p-ui" id="mUI"></div></div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--t3);text-align:center">Tap the phone tabs above to switch screens</div>
+      </div>
+    </div>
+
+    <!-- Colors -->
+    <div class="mob-sec" id="m-colors">
+      <div class="mob-sub-tabs">
+        <button class="mst on" onclick="mSub(this,'mc','global')">Global</button>
+        <button class="mst" onclick="mSub(this,'mc','accent')">Accent</button>
+        <button class="mst" onclick="mSub(this,'mc','ui')">UI</button>
+        <button class="mst" onclick="mSub(this,'mc','dark')">Dark Mode</button>
+      </div>
+      <div class="mob-sub-sec on" id="mc-global"></div>
+      <div class="mob-sub-sec" id="mc-accent"></div>
+      <div class="mob-sub-sec" id="mc-ui"></div>
+      <div class="mob-sub-sec" id="mc-dark"></div>
+    </div>
+
+    <!-- Wall -->
+    <div class="mob-sec" id="m-wall">
+      <div class="mob-sub-tabs">
+        <button class="mst on" onclick="mSub(this,'mw','home')">Home</button>
+        <button class="mst" onclick="mSub(this,'mw','lock')">Lock</button>
+        <button class="mst" onclick="mSub(this,'mw','aod')">AOD</button>
+      </div>
+      <div class="mob-sub-sec on" id="mw-home"></div>
+      <div class="mob-sub-sec" id="mw-lock"></div>
+      <div class="mob-sub-sec" id="mw-aod"></div>
+    </div>
+
+    <!-- Icons -->
+    <div class="mob-sec" id="m-icons">
+      <div class="mob-sub-tabs">
+        <button class="mst on" onclick="mSub(this,'mi','shape')">Shape</button>
+        <button class="mst" onclick="mSub(this,'mi','pack')">Pack</button>
+        <button class="mst" onclick="mSub(this,'mi','custom')">Custom</button>
+        <button class="mst" onclick="mSub(this,'mi','dock')">Dock</button>
+      </div>
+      <div class="mob-sub-sec on" id="mi-shape"></div>
+      <div class="mob-sub-sec" id="mi-pack"></div>
+      <div class="mob-sub-sec" id="mi-custom"></div>
+      <div class="mob-sub-sec" id="mi-dock"></div>
+    </div>
+
+    <!-- More -->
+    <div class="mob-sec" id="m-more">
+      <div class="mob-sub-tabs">
+        <button class="mst on" onclick="mSub(this,'mm','fonts')">Fonts</button>
+        <button class="mst" onclick="mSub(this,'mm','status')">Status</button>
+        <button class="mst" onclick="mSub(this,'mm','lock')">Lock</button>
+        <button class="mst" onclick="mSub(this,'mm','notifs')">Notifs</button>
+        <button class="mst" onclick="mSub(this,'mm','qs')">QS</button>
+        <button class="mst" onclick="mSub(this,'mm','anim')">Anim</button>
+        <button class="mst" onclick="mSub(this,'mm','sound')">Sound</button>
+      </div>
+      <div class="mob-sub-sec on" id="mm-fonts"></div>
+      <div class="mob-sub-sec" id="mm-status"></div>
+      <div class="mob-sub-sec" id="mm-lock"></div>
+      <div class="mob-sub-sec" id="mm-notifs"></div>
+      <div class="mob-sub-sec" id="mm-qs"></div>
+      <div class="mob-sub-sec" id="mm-anim"></div>
+      <div class="mob-sub-sec" id="mm-sound"></div>
+    </div>
+
+    <!-- Export -->
+    <div class="mob-sec" id="m-export"></div>
+  </div>
+
+  <nav class="mob-bnav">
+    <button class="mbn on" onclick="mNav(this,'preview')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Phone</button>
+    <button class="mbn" onclick="mNav(this,'colors')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></svg>Colors</button>
+    <button class="mbn" onclick="mNav(this,'wall')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><circle cx="8" cy="9" r="2" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg>Wall</button>
+    <button class="mbn" onclick="mNav(this,'icons')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Icons</button>
+    <button class="mbn" onclick="mNav(this,'more')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>More</button>
+    <button class="mbn" onclick="mNav(this,'export')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export</button>
+  </nav>
+</div>
+
+<script>
+// ═══════════════════════════════════
+// THEME STATE
+// ═══════════════════════════════════
+const T={
+  bg:'#0b1120',wall:'linear-gradient(170deg,#0e1a35 0%,#152545 40%,#0a1220 100%)',
+  wallLock:'linear-gradient(170deg,#0e1a35 0%,#152545 40%,#0a1220 100%)',
+  text:'#ffffff',text2:'rgba(255,255,255,.55)',accent:'#ff3b3b',
+  iconBg:'rgba(255,255,255,.11)',dock:'rgba(255,255,255,.09)',iconShape:'50%',
+  card:'rgba(18,28,50,.88)',notif:'rgba(14,22,40,.9)',
+  sbHeight:'28px',sbTransp:true,showBatPct:true,showNetSpd:false,showCarrier:false,
+  batStyle:'pill',clockSize:54,clockWeight:200,clockFont:"'Plus Jakarta Sans',sans-serif",
+  lockClock:'large',lockDate:true,lockSeconds:false,lockWeather:false,
+  lockFP:true,lockLeftShortcut:'Torch',lockRightShortcut:'Camera',lockUnlockAnim:'ripple',
+  notifStyle:'card',notifBg:'rgba(14,22,40,.9)',notifRadius:14,notifBlur:12,
+  notifGrouped:true,notifHeadsUp:true,notifIcon:true,
+  qsCols:4,qsBlur:14,qsMedia:true,qsCompact:false,qsTransp:true,
+  animSpeed:'normal',openAnim:'slide-up',closeAnim:'slide-down',scrollStyle:'spring',
+  parallax:true,iconPress:true,reduceMotion:false,
+  sysFont:"'Plus Jakarta Sans',sans-serif",fontSize:100,fontWeight:'400',
+  dockRadius:22,dockBlur:16,dockBg:'rgba(255,255,255,.09)',
+  iconSize:38,iconBgOpacity:11,
+  aodEnabled:true,aodClock:true,aodNotifs:true,aodDate:true,
+  touchSound:true,kbSound:false,lockSound:true,chargeSound:true,ssSound:true,
+  navBar:'gesture',navBarStyle:'pill',
+};
+
+let curPreviewTab='home';
+
+function setCSS(k,v){document.documentElement.style.setProperty(k,v)}
+function applyTheme(){
+  setCSS('--pt-bg',T.bg);setCSS('--pt-wall',T.wall);setCSS('--pt-text',T.text);
+  setCSS('--pt-text2',T.text2);setCSS('--pt-accent',T.accent);setCSS('--pt-iconbg',T.iconBg);
+  setCSS('--pt-dock',T.dock);setCSS('--pt-card',T.card);setCSS('--pt-notif',T.notif);
+  setCSS('--pt-shape',T.iconShape);setCSS('--pt-clock-size',T.clockSize+'px');
+  setCSS('--pt-clock-w',T.clockWeight);setCSS('--pt-font',T.sysFont);
+  setCSS('--pt-icon-size',T.iconSize+'px');setCSS('--pt-dock-r',T.dockRadius+'px');
+  setCSS('--pt-sb-h',T.sbHeight);
+  ['dWP','mWP'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.background=T.wall});
+  renderAll();
+}
+
+// ═══════════════════════════════════
+// CLOCK
+// ═══════════════════════════════════
+function getTime(){const n=new Date();return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0')}
+function getDate(){return new Date().toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}
+
+// ═══════════════════════════════════
+// PHONE SCREENS HTML
+// ═══════════════════════════════════
+function sbHtml(){
+  return`<div class="miui-sb">
+    <div class="miui-sb-time">${getTime()}</div>
+    <div class="miui-sb-right">
+      ${T.showNetSpd?`<div class="miui-sb-net">▲ 1.2<br>▼ 4.8</div>`:''}
+      <div class="miui-sb-icons">
+        <div class="sig-bars"><span></span><span></span><span></span><span></span></div>
+        <div class="wifi-ic"><span></span><span></span><span></span></div>
+        ${T.showBatPct?`<div class="bat-ic"><div class="bat-body"><div class="bat-fill"></div></div><div class="bat-tip"></div><span class="bat-pct">87%</span></div>`:
+        `<div class="bat-ic"><div class="bat-body"><div class="bat-fill"></div></div><div class="bat-tip"></div></div>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+const ICONS=[
+  {e:'📷',l:'Camera'},{e:'📱',l:'Phone'},{e:'💬',l:'Messages'},{e:'🌐',l:'Browser'},
+  {e:'🎵',l:'Music'},{e:'📧',l:'Mail'},{e:'🗺',l:'Maps'},{e:'⚙️',l:'Settings'},
+  {e:'📸',l:'Gallery'},{e:'🎮',l:'Games'},{e:'📅',l:'Calendar'},{e:'🔢',l:'Calculator'},
+  {e:'📰',l:'News'},{e:'🛒',l:'Shop'},{e:'💰',l:'Wallet'},{e:'🔍',l:'Search'},
+];
+
+function homeHtml(){
+  return`${sbHtml()}
+  <div class="miui-home">
+    <div class="miui-clock-wrap">
+      <div class="miui-clock">${getTime()}</div>
+      <div class="miui-date">${getDate()}</div>
+      <div class="miui-weather">⛅ 26°C · Partly Cloudy</div>
+    </div>
+    <div class="miui-search"><span>Search phone and apps</span><div class="miui-search-i">🔍</div></div>
+    <div class="miui-icons">
+      ${ICONS.map(ic=>`<div class="miui-icon"><div class="miui-icon-box">${ic.e}</div><div class="miui-icon-lbl">${ic.l}</div></div>`).join('')}
+    </div>
+  </div>
+  <div class="miui-dock">
+    <div class="miui-dock-icon">📱</div>
+    <div class="miui-dock-icon">💬</div>
+    <div class="miui-dock-icon">🌐</div>
+    <div class="miui-dock-icon">📷</div>
+  </div>
+  <div class="miui-nav">
+    <span class="nav-back">‹</span>
+    <div class="nav-home-pill"></div>
+    <span class="nav-rec">⊡</span>
+  </div>`;
+}
+
+function lockHtml(){
+  return`${sbHtml()}
+  <div class="miui-lock">
+    <div class="lock-clock">
+      <div class="lock-time">${getTime()}</div>
+      <div class="lock-date">${getDate()}</div>
+      <div class="lock-weather">⛅ 26°C</div>
+    </div>
+    <div class="lock-notifs">
+      <div class="lock-notif">
+        <div class="lock-notif-row"><div class="lock-notif-ico" style="background:#25d366">💬</div><div class="lock-notif-app">Messages</div><div class="lock-notif-time">2m ago</div></div>
+        <div class="lock-notif-title">Hey are you free tonight?</div>
+        <div class="lock-notif-body">Tap to reply</div>
+      </div>
+      <div class="lock-notif">
+        <div class="lock-notif-row"><div class="lock-notif-ico" style="background:#ea4335">📧</div><div class="lock-notif-app">Gmail</div><div class="lock-notif-time">5m ago</div></div>
+        <div class="lock-notif-title">Meeting at 3pm — agenda attached</div>
+        <div class="lock-notif-body">John Smith • Work</div>
+      </div>
+    </div>
+    <div class="lock-bottom">
+      ${T.lockFP?`<div class="lock-fp">👆</div>`:''}
+      <div class="lock-unlock">
+        <div class="lock-unlock-pill"></div>
+        <div class="lock-swipe">SWIPE UP TO UNLOCK</div>
+      </div>
+      <div class="lock-shortcuts">
+        <div class="lock-shortcut">${T.lockLeftShortcut==='Torch'?'🔦':T.lockLeftShortcut==='Camera'?'📷':'🔕'}</div>
+        <div class="lock-shortcut">${T.lockRightShortcut==='Camera'?'📷':T.lockRightShortcut==='Torch'?'🔦':'🎵'}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function notifHtml(){
+  const cards=[
+    {ico:'💬',app:'Messages',body:'Hey! Are you free tonight? Want to grab food 🍜',time:'Just now',bg:'#25d366'},
+    {ico:'📧',app:'Gmail',body:'Meeting at 3pm — agenda inside the doc',time:'5m',bg:'#ea4335'},
+    {ico:'📸',app:'Instagram',body:'@user liked your photo and 42 others',time:'12m',bg:'#e1306c'},
+    {ico:'🔔',app:'MIUI',body:'Theme applied successfully',time:'1h',bg:'#ff3b3b'},
+    {ico:'📺',app:'YouTube',body:'New video: Top 10 Redmi tips & tricks',time:'2h',bg:'#ff0000'},
+  ];
+  return`${sbHtml()}
+  <div class="miui-shade">
+    <div class="shade-handle"></div>
+    <div class="shade-notifs">
+      ${cards.map(c=>`<div class="shade-card">
+        <div class="shade-card-top"><div class="shade-app-ico" style="background:${c.bg}">${c.ico}</div><div class="shade-app-name">${c.app}</div><div class="shade-time">${c.time}</div></div>
+        <div class="shade-title">${c.body.slice(0,32)}</div>
+        <div class="shade-body">${c.body}</div>
+        <div class="shade-actions"><div class="shade-btn">Reply</div><div class="shade-btn">Mark read</div></div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function qsHtml(){
+  const tiles=[
+    {ico:'📶',l:'WiFi',on:true},{ico:'📡',l:'Mobile',on:true},{ico:'🔵',l:'Bluetooth',on:false},{ico:'🔦',l:'Torch',on:false},
+    {ico:'✈️',l:'Airplane',on:false},{ico:'📍',l:'Location',on:true},{ico:'🔄',l:'Rotation',on:true},{ico:'🌙',l:'Dark',on:true},
+    {ico:'📻',l:'NFC',on:false},{ico:'🔕',l:'Silent',on:false},{ico:'🖥',l:'Cast',on:false},{ico:'💻',l:'Hotspot',on:false},
+  ];
+  return`${sbHtml()}
+  <div class="miui-qs">
+    <div class="qs-user">
+      <div class="qs-avatar">😊</div>
+      <div><div class="qs-user-name">My Redmi</div><div class="qs-user-sub">MIUI Theme Studio</div></div>
+    </div>
+    <div class="qs-bright"><span class="qs-bright-ico">🌑</span><div class="qs-bright-bar"><div class="qs-bright-fill"></div></div><span class="qs-bright-ico">☀️</span></div>
+    <div class="qs-tiles">
+      ${tiles.map(t=>`<div class="qs-tile${t.on?' on':''}" onclick="this.classList.toggle('on')"><div class="qs-tile-ico">${t.ico}</div><div class="qs-tile-lbl">${t.l}</div></div>`).join('')}
+    </div>
+    ${T.qsMedia?`<div class="qs-media">
+      <div class="qs-media-art">🎵</div>
+      <div class="qs-media-info"><div class="qs-media-title">Blinding Lights</div><div class="qs-media-artist">The Weeknd</div></div>
+      <div class="qs-media-ctrls"><div class="qs-ctrl-btn">⏮</div><div class="qs-ctrl-btn" style="font-size:13px">⏸</div><div class="qs-ctrl-btn">⏭</div></div>
+    </div>`:''}
+  </div>
+  <div class="miui-nav" style="margin-top:auto">
+    <div class="nav-home-pill"></div>
+  </div>`;
+}
+
+function settingsHtml(){
+  const secs=[
+    {title:'Connectivity',items:[
+      {ico:'📶',bg:'#2196f3',label:'Wi-Fi',sub:'Connected · Home_5G',arr:true},
+      {ico:'📡',bg:'#4caf50',label:'Mobile Network',sub:'Airtel 4G · Active',arr:true},
+      {ico:'🔵',bg:'#2196f3',label:'Bluetooth',sub:'On · 2 devices',tog:false},
+      {ico:'✈️',bg:'#607d8b',label:'Airplane Mode',sub:'Off',tog:false},
+      {ico:'💻',bg:'#ff5722',label:'Personal Hotspot',sub:'Off',tog:false},
+    ]},
+    {title:'Display',items:[
+      {ico:'🌟',bg:'#ffc107',label:'Brightness',sub:'Auto · 75%',arr:true},
+      {ico:'🎨',bg:'#9c27b0',label:'Theme',sub:'Custom · MIUI',arr:true},
+      {ico:'🌙',bg:'#3f51b5',label:'Dark Mode',sub:'On',tog:true},
+      {ico:'🔤',bg:'#009688',label:'Font & Display Size',sub:'Default',arr:true},
+      {ico:'🖥',bg:'#607d8b',label:'Screen Refresh Rate',sub:'120Hz',arr:true},
+      {ico:'⚡',bg:'#ff9800',label:'Always-on Display',sub:'On',tog:true},
+    ]},
+    {title:'Sound',items:[
+      {ico:'🔊',bg:'#e91e63',label:'Volume',sub:'Ringtone · Notif · Media',arr:true},
+      {ico:'📳',bg:'#795548',label:'Ringtone',sub:'MIUI Default',arr:true},
+      {ico:'🔔',bg:'#ff5722',label:'Notification Sound',sub:'MIUI Ding',arr:true},
+    ]},
+    {title:'Privacy & Security',items:[
+      {ico:'🔒',bg:'#f44336',label:'Lock Screen',sub:'Fingerprint + PIN',arr:true},
+      {ico:'👁',bg:'#9c27b0',label:'Privacy',sub:'Permissions · App activity',arr:true},
+    ]},
+  ];
+  return`${sbHtml()}
+  <div class="miui-settings">
+    <div class="settings-header"><span class="settings-back">←</span><div class="settings-title">Settings</div></div>
+    <div class="settings-search"><span>🔍  Search settings</span></div>
+    <div class="settings-list">
+      ${secs.map(sec=>`<div class="settings-section">
+        <div class="settings-sec-title">${sec.title}</div>
+        ${sec.items.map(item=>`<div class="settings-item">
+          <div class="settings-item-ico" style="background:${item.bg}">${item.ico}</div>
+          <div class="settings-item-text"><div class="settings-item-label">${item.label}</div><div class="settings-item-sub">${item.sub}</div></div>
+          ${item.arr?`<div class="settings-item-arr">›</div>`:`<div class="settings-tog${item.tog?' on':''}" onclick="this.classList.toggle('on')"></div>`}
+        </div>`).join('')}
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function recentsHtml(){
+  const apps=[
+    {e:'⚙️',n:'Settings',bg:'linear-gradient(135deg,#1a2040,#2a3060)'},
+    {e:'🌐',n:'Browser',bg:'linear-gradient(135deg,#1a3040,#0a5060)'},
+    {e:'💬',n:'Messages',bg:'linear-gradient(135deg,#0a3020,#0a5030)'},
+    {e:'🎵',n:'Music',bg:'linear-gradient(135deg,#3a0a20,#600a30)'},
+  ];
+  return`${sbHtml()}
+  <div class="miui-recents">
+    <div class="recents-title">Recent Apps</div>
+    <div class="recent-cards">
+      ${apps.map(a=>`<div class="recent-card">
+        <div class="recent-card-header" style="background:${a.bg}">${a.e}</div>
+        <div class="recent-card-footer"><div class="recent-card-ico">${a.e}</div><div class="recent-card-name">${a.n}</div></div>
+      </div>`).join('')}
+    </div>
+    <div class="recents-clear">✕ Clear all</div>
+  </div>
+  <div class="miui-nav" style="margin-top:auto"><div class="nav-home-pill"></div></div>`;
+}
+
+function renderPhone(uiId,tab){
+  const el=document.getElementById(uiId); if(!el) return;
+  const html={home:homeHtml,lock:lockHtml,notif:notifHtml,qs:qsHtml,settings:settingsHtml,recents:recentsHtml};
+  el.innerHTML=(html[tab]||homeHtml)();
+}
+function renderAll(){renderPhone('dUI',curPreviewTab);renderPhone('mUI',curPreviewTab)}
+
+function pTab(btn,tab){
+  document.querySelectorAll('.pt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); curPreviewTab=tab; renderPhone('dUI',tab);
+}
+function mPTab(btn,tab){
+  document.querySelectorAll('.mpt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); curPreviewTab=tab; renderPhone('mUI',tab);
+}
+
+// ═══════════════════════════════════
+// SIDEBAR CONFIG
+// ═══════════════════════════════════
+const RAIL={
+  colors:{title:'Color Scheme',items:[
+    {k:'colors-global',l:'Global Colors'},{k:'colors-accent',l:'Accent & Highlights'},{k:'colors-ui',l:'UI Elements'},{k:'colors-dark',l:'Dark Mode',badge:'HyperOS'}
+  ]},
+  wall:{title:'Wallpaper',items:[
+    {k:'wall-home',l:'Home Screen'},{k:'wall-lock',l:'Lock Screen'},{k:'wall-aod',l:'Always-on Display'}
+  ]},
+  icons:{title:'Icons',items:[
+    {k:'icons-shape',l:'Icon Shape'},{k:'icons-bg',l:'Icon Background'},{k:'icons-dock',l:'Dock'},{k:'icons-pack',l:'Icon Pack'},{k:'icons-custom',l:'Custom Icons'},{k:'icons-labels',l:'Icon Labels'}
+  ]},
+  fonts:{title:'Typography',items:[
+    {k:'fonts-sys',l:'System Font'},{k:'fonts-clock',l:'Clock Font'},{k:'fonts-size',l:'Font Size'}
+  ]},
+  statusbar:{title:'Status Bar',items:[
+    {k:'sb-layout',l:'Layout & Style'},{k:'sb-icons',l:'Status Icons'},{k:'sb-battery',l:'Battery Icon'}
+  ]},
+  lockscreen:{title:'Lock Screen',items:[
+    {k:'lock-clock',l:'Clock Style'},{k:'lock-notifs',l:'Lock Notifications'},{k:'lock-shortcuts',l:'Shortcuts'},{k:'lock-unlock',l:'Unlock Style'},{k:'lock-face',l:'Face/Fingerprint'}
+  ]},
+  notifs:{title:'Notifications',items:[
+    {k:'notif-card',l:'Notification Card'},{k:'notif-banner',l:'Heads-up Banner'},{k:'notif-lock',l:'Lock Screen Notifs'},{k:'notif-shade',l:'Notification Shade'}
+  ]},
+  quicksettings:{title:'Quick Settings',items:[
+    {k:'qs-tiles',l:'Tile Layout'},{k:'qs-style',l:'Panel Style'},{k:'qs-media',l:'Media Player'}
+  ]},
+  animations:{title:'Animations',items:[
+    {k:'anim-speed',l:'Animation Speed'},{k:'anim-app',l:'App Open/Close'},{k:'anim-scroll',l:'Scroll Style'},{k:'anim-misc',l:'Misc Effects'}
+  ]},
+  sounds:{title:'Sounds',items:[
+    {k:'sound-ring',l:'Ringtone'},{k:'sound-notif',l:'Notification Sound'},{k:'sound-sys',l:'System Sounds'},{k:'sound-keyboard',l:'Keyboard Sound'},{k:'sound-vibration',l:'Vibration Pattern'}
+  ]},
+  aod:{title:'Always-on Display',items:[
+    {k:'aod-clock',l:'AOD Clock'},{k:'aod-style',l:'AOD Style'},{k:'aod-notifs',l:'AOD Notifications'}
+  ]},
+  export:{title:'Export',items:[
+    {k:'export-main',l:'Export & Download'},{k:'export-info',l:'Theme Info'}
+  ]},
+};
+
+let curRail='colors',curKey='colors-global';
+
+function railGo(btn,rail){
+  document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); curRail=rail;
+  const cfg=RAIL[rail]; if(!cfg) return;
+  document.getElementById('sb').innerHTML=`<div class="sb-h op" onclick="sbToggle(this)">${cfg.title}<span class="a">›</span></div><div class="sb-items">${cfg.items.map(i=>`<div class="ni${i.k===curKey?' on':''}" onclick="loadEd('${i.k}',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg><span>${i.l}</span>${i.badge?`<span class="badge">${i.badge}</span>`:''}</div>`).join('')}</div>`;
+  if(cfg.items.length){loadEd(cfg.items[0].k,null);setTimeout(()=>{const f=document.querySelector('#sb .ni');if(f)f.classList.add('on')},0)}
+}
+function sbToggle(el){el.classList.toggle('op');const nx=el.nextElementSibling;nx.style.display=el.classList.contains('op')?'block':'none'}
+
+// ═══════════════════════════════════
+// EDITOR CONTENT
+// ═══════════════════════════════════
+function cr(id,label,val,sk){return`<div class="cg"><div class="cl">${label}</div><div class="cr" onclick="pickC(this,'${sk}')"><div class="cs" id="cs-${id}" style="background:${val}"></div><div class="cv" id="cv-${id}">${val}</div><input type="color" value="${toHex(val)}" oninput="onCol(this,'${id}','${sk}')"></div></div>`}
+function rr(label,min,max,val,unit,key){return`<div class="cg"><div class="cl">${label}</div><div class="rr"><input type="range" min="${min}" max="${max}" value="${val}" oninput="onRng(this,'${unit}','${key}')"><div class="rv" id="rv-${key}">${val}${unit}</div></div></div>`}
+function sr(label,opts,val,key){return`<div class="cg"><div class="cl">${label}</div><select class="sel" onchange="onSel(this,'${key}')">${opts.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('')}</select></div>`}
+function tog(label,sublabel,key){const on=T[key];return`<div class="tr"><div class="tl">${label}${sublabel?`<small>${sublabel}</small>`:''}</div><div class="tog${on?' on':''}" onclick="onTog(this,'${key}')"></div></div>`}
+function uz(label,accept,fn){return`<div class="uz"><input type="file" accept="${accept}" onchange="${fn}(this)"><div class="uz-i">📂</div><div class="uz-t"><strong>Upload ${label}</strong><br>Drag & drop or tap to browse</div></div>`}
+function chips(arr,fn){return`<div class="chips">${arr.map(c=>`<div class="chip${c.on?' on':''}" onclick="${fn}('${c.v}',this)"><div class="dot" style="background:${c.c}"></div>${c.l}</div>`).join('')}</div>`}
+function shapeGrid(){
+  const shapes=[{n:'Circle',r:'50%'},{n:'Squircle',r:'28%'},{n:'Rounded',r:'16%'},{n:'Square',r:'4%'},{n:'Teardrop',r:'50% 50% 50% 0'},{n:'Leaf',r:'0 50% 0 50%'}];
+  return`<div class="shape-g">${shapes.map((s,i)=>`<div class="sho${T.iconShape===s.r?' on':''}" onclick="setShape('${s.r}',this)"><div class="sh-demo" style="border-radius:${s.r}"></div><div class="sh-l">${s.n}</div></div>`).join('')}</div>`;
+}
+
+const ED={
+'colors-global':()=>`<div class="st"><span class="dot"></span>Global Colors</div><div class="ss">Core colors used across the entire MIUI system</div>
+  <div class="card"><div class="ct">🎨 Background & Surface</div><div class="g2">${cr('bg','Background',T.bg,'bg')}${cr('card','Card/Surface',T.card,'card')}</div></div>
+  <div class="card"><div class="ct">📝 Text Colors</div><div class="g2">${cr('text','Primary Text',T.text,'text')}${cr('text2','Secondary Text','rgba(255,255,255,.55)','text2')}</div></div>
+  <div class="card"><div class="ct">⚡ Presets</div>${chips([
+    {l:'Midnight',c:'#0b1120',v:'midnight'},{l:'Deep Ocean',c:'#061830',v:'ocean'},
+    {l:'Forest',c:'#0a1f10',v:'forest'},{l:'Cherry',c:'#1a0008',v:'cherry'},
+    {l:'Slate',c:'#0e1118',v:'slate'},{l:'Warm Dark',c:'#1a1208',v:'warm'},
+    {l:'Pure Black',c:'#000000',v:'pureblack'},{l:'Light Mode',c:'#f4f6f9',v:'light'},
+  ],'applyPreset')}</div>`,
+
+'colors-accent':()=>`<div class="st"><span class="dot"></span>Accent & Highlights</div><div class="ss">Color used for active elements, buttons, and highlights</div>
+  <div class="card"><div class="ct">🎯 Accent Color</div><div class="g2">${cr('accent','Primary Accent',T.accent,'accent')}${cr('accent2','Gradient End','#ff6b35','accent2')}</div>${rr('Accent Opacity',10,100,100,'%','accentOp')}</div>
+  <div class="card"><div class="ct">🔴 Color Presets</div>${chips([
+    {l:'MIUI Red',c:'#ff3b3b',v:'#ff3b3b'},{l:'HyperOS Blue',c:'#007aff',v:'#007aff'},
+    {l:'Orange',c:'#ff6b35',v:'#ff6b35'},{l:'Cyan',c:'#00d4ff',v:'#00d4ff'},
+    {l:'Purple',c:'#7c3aed',v:'#7c3aed'},{l:'Green',c:'#00e07f',v:'#00e07f'},
+    {l:'Pink',c:'#f472b6',v:'#f472b6'},{l:'Gold',c:'#fbbf24',v:'#fbbf24'},
+    {l:'Mint',c:'#34d399',v:'#34d399'},{l:'Rose',c:'#fb7185',v:'#fb7185'},
+  ],'setAccent')}</div>`,
+
+'colors-ui':()=>`<div class="st"><span class="dot"></span>UI Element Colors</div><div class="ss">Colors for buttons, switches, sliders and dividers</div>
+  <div class="card"><div class="ct">🎛 Controls</div><div class="g2">
+    ${cr('btnbg','Button Background',T.accent,'accent')}${cr('btntxt','Button Text','#ffffff','')}
+    ${cr('togon','Toggle Active','#00e07f','')}${cr('togoff','Toggle Inactive','#1d2535','')}
+    ${cr('divider','Divider/Border','#1d2535','')}${cr('icontint','Icon Tint','#7a8ba5','')}
+  </div></div>
+  <div class="card"><div class="ct">🔵 App Colors</div><div class="g2">
+    ${cr('phone-clr','Phone App','#22c55e','')}${cr('msg-clr','Messages','#22c55e','')}
+    ${cr('cam-clr','Camera','#3b82f6','')}${cr('set-clr','Settings','#6b7280','')}
+  </div></div>`,
+
+'colors-dark':()=>`<div class="st"><span class="dot"></span>Dark Mode</div><div class="ss">Dark mode & AMOLED settings</div>
+  <div class="card"><div class="ct">🌙 Dark Mode</div>
+    ${tog('Enable Dark Mode','Auto-switches based on system','darkMode')}
+    ${tog('AMOLED Pure Black','True black for OLED displays','amoled')}
+    ${tog('Dim wallpaper in dark','Reduces eye strain','dimWall')}
+    ${tog('Follow system setting','Auto switch with Android','followSys')}
+  </div>
+  <div class="card"><div class="ct">🎨 Dark Overrides</div><div class="g2">
+    ${cr('dbg','Dark Background','#000000','')}${cr('dcard','Dark Card','#0a0a0a','')}
+  </div></div>`,
+
+'wall-home':()=>`<div class="st"><span class="dot"></span>Home Screen Wallpaper</div><div class="ss">Background shown on the main home screen</div>
+  <div class="card"><div class="ct">🖼 Upload</div>${uz('Image (JPG·PNG·WebP·HEIC)','image/*','wHome')}</div>
+  <div class="card"><div class="ct">🎨 Gradient Presets</div>${chips([
+    {l:'Deep Blue',c:'#0e1a35',v:'linear-gradient(170deg,#0e1a35,#152545,#0a1220)'},
+    {l:'Cherry Night',c:'#1a0008',v:'linear-gradient(160deg,#1a0008,#500020,#900040)'},
+    {l:'Forest Dark',c:'#061a0a',v:'linear-gradient(160deg,#061a0a,#0d3a1a,#0a2a14)'},
+    {l:'Violet Dream',c:'#120820',v:'linear-gradient(160deg,#120820,#2d1460,#1a0840)'},
+    {l:'Sunset',c:'#1a0808',v:'linear-gradient(170deg,#1a0808,#602010,#ff6030)'},
+    {l:'Aurora',c:'#050f1a',v:'linear-gradient(170deg,#050f1a,#0a2a3a,#006060)'},
+    {l:'Noir',c:'#000000',v:'#000000'},
+    {l:'Ice',c:'#f0f8ff',v:'linear-gradient(160deg,#e8f4fd,#dbeafe,#f0f9ff)'},
+  ],'setWHome')}
+  </div>
+  <div class="card"><div class="ct">⚙ Options</div>
+    ${sr('Scale Mode',['Fill (Crop)','Fit','Stretch','Tile','Center'],'Fill (Crop)','wallScale')}
+    ${rr('Blur Amount',0,30,0,'px','wallBlur')}
+    ${rr('Dim Overlay',0,80,0,'%','wallDim')}
+    ${rr('Saturation',0,200,100,'%','wallSat')}
+    ${tog('Parallax scroll effect','Depth illusion on swipe','parallax')}
+  </div>`,
+
+'wall-lock':()=>`<div class="st"><span class="dot"></span>Lock Screen Wallpaper</div><div class="ss">Separate wallpaper for the lock screen</div>
+  <div class="card"><div class="ct">🔒 Lock Wallpaper</div>${uz('Lock Wallpaper','image/*','wLock')}</div>
+  <div class="card"><div class="ct">🎨 Presets</div>${chips([
+    {l:'Same as Home',c:'#0e1a35',v:'same'},{l:'Pure Black',c:'#000000',v:'#000000'},
+    {l:'Deep Blue',c:'#05101f',v:'#05101f'},{l:'Blur Home',c:'#0e1a35',v:'blur'},
+  ],'setWLock')}</div>
+  <div class="card"><div class="ct">⚙ Options</div>${rr('Blur Amount',0,30,4,'px','lockWallBlur')}${tog('Lock screen clock over wallpaper','','lockClockOver')}</div>`,
+
+'wall-aod':()=>`<div class="st"><span class="dot"></span>Always-on Display</div><div class="ss">Screen shown when phone is idle (AOD)</div>
+  <div class="card"><div class="ct">⚡ AOD Toggle</div>
+    ${tog('Enable AOD','Keeps time visible when screen off','aodEnabled')}
+    ${tog('Show clock on AOD','','aodClock')}
+    ${tog('Show date','','aodDate')}
+    ${tog('Show notification count','','aodNotifs')}
+    ${tog('Show music lyrics','HyperOS feature','aodLyrics')}
+  </div>
+  <div class="card"><div class="ct">🎨 AOD Style</div>
+    ${sr('AOD Theme',['Minimal','Classic MIUI','Animated','Artboard','Custom'],'Minimal','aodStyle')}
+    ${sr('Clock Style',['Digital simple','Digital bold','Analog','Word clock'],'Digital simple','aodClockStyle')}
+    ${cr('aodclr','AOD Color','#ffffff','')}${rr('AOD Brightness',1,50,15,'%','aodBright')}
+  </div>`,
+
+'icons-shape':()=>`<div class="st"><span class="dot"></span>Icon Shape</div><div class="ss">Shape applied to all home screen icons</div>
+  <div class="card"><div class="ct">⬡ Shape</div>${shapeGrid()}${rr('Custom Radius',0,50,50,'%','iconR')}</div>`,
+
+'icons-bg':()=>`<div class="st"><span class="dot"></span>Icon Background</div><div class="ss">Background style for app icons</div>
+  <div class="card"><div class="ct">🎨 Background</div>
+    ${cr('iconbg','Background Color',T.iconBg,'iconBg')}
+    ${rr('Opacity',0,100,11,'%','iconBgOp')}
+    ${rr('Icon Size',70,130,100,'%','iconSize')}
+    ${tog('Drop shadow under icons','','iconShadow')}
+    ${tog('Icon glow effect','','iconGlow')}
+  </div>`,
+
+'icons-dock':()=>`<div class="st"><span class="dot"></span>Dock Style</div><div class="ss">The bottom app dock on the home screen</div>
+  <div class="card"><div class="ct">⬛ Dock</div>
+    ${cr('dockbg','Dock Background',T.dock,'dock')}
+    ${rr('Dock Corner Radius',0,30,22,'px','dockR')}
+    ${rr('Dock Blur',0,30,16,'px','dockBlur')}
+    ${rr('Dock Opacity',0,100,9,'%','dockOp')}
+    ${tog('Show dock background','','showDock')}
+    ${tog('Dock divider line','','dockDivider')}
+  </div>`,
+
+'icons-pack':()=>`<div class="st"><span class="dot"></span>Icon Pack</div><div class="ss">Replace all app icons with an icon pack</div>
+  <div class="card"><div class="ct">📦 Upload Pack</div>${uz('Icon Pack (.apk / .zip)','.apk,.zip,.mtz','loadPack')}</div>`,
+
+'icons-custom':()=>`<div class="st"><span class="dot"></span>Custom Icons</div><div class="ss">Override specific app icons one by one</div>
+  <div class="card"><div class="ct">✏ Per-App Icon</div>
+    ${sr('Target App',['Phone','Messages','Camera','Settings','Browser','Music','Gallery','Calculator','Calendar','Clock','Mail','Maps','Store'],'Phone','customApp')}
+    ${uz('Icon Image (PNG 192×192)','image/png','loadCustomIcon')}
+  </div>`,
+
+'icons-labels':()=>`<div class="st"><span class="dot"></span>Icon Labels</div><div class="ss">Customize text shown below app icons</div>
+  <div class="card"><div class="ct">🔤 Label Style</div>
+    ${tog('Show icon labels','','showLabels')}
+    ${sr('Font Size',['Extra Small','Small','Medium','Large'],'Small','labelSize')}
+    ${cr('lblclr','Label Color',T.text2,'')}
+    ${tog('Bold labels','','boldLabels')}
+    ${tog('Label shadow','','labelShadow')}
+    ${rr('Label opacity',20,100,80,'%','labelOp')}
+  </div>`,
+
+'fonts-sys':()=>`<div class="st"><span class="dot"></span>System Font</div><div class="ss">Font used across the whole system UI</div>
+  <div class="card"><div class="ct">🔤 Font Family</div>
+    ${sr('System Font',['Plus Jakarta Sans','Rajdhani','Roboto','Noto Sans','Nunito','Poppins','Exo 2','Oxanium','Barlow','IBM Plex Sans','Custom upload'],'Plus Jakarta Sans','sysFont')}
+    <div style="background:var(--s2);border-radius:8px;padding:14px;margin-top:10px;text-align:center;border:1px solid var(--bd2)">
+      <div style="font-size:24px;margin-bottom:3px" id="fprev">AaBbCcDd 1234567</div>
+      <div style="font-size:10px;color:var(--t3)">System · Launcher · Apps · Keyboard</div>
+    </div>
+    ${uz('Custom Font (.ttf/.otf/.woff2)','.ttf,.otf,.woff,.woff2','loadFont')}
+  </div>`,
+
+'fonts-clock':()=>`<div class="st"><span class="dot"></span>Clock Font</div><div class="ss">Font for lock screen and home screen clock</div>
+  <div class="card"><div class="ct">🕐 Clock Typography</div>
+    ${sr('Clock Font',['Same as system','Rajdhani','Orbitron','Thin (200)','Ultra Light (100)','Custom'],'Same as system','clockFont')}
+    ${rr('Font Size',28,90,54,'sp','clockSize')}
+    ${sr('Weight',['100 — Thin','200 — ExtraLight','300 — Light','400 — Regular','700 — Bold'],'200 — ExtraLight','clockW')}
+    ${tog('Show seconds','','clockSec')}
+    ${tog('24-hour format','','clock24')}
+    ${tog('Show AM/PM','Only in 12h mode','clockAMPM')}
+  </div>`,
+
+'fonts-size':()=>`<div class="st"><span class="dot"></span>Font Size</div><div class="ss">Global font scaling</div>
+  <div class="card"><div class="ct">📐 Scaling</div>
+    ${rr('Font Scale',80,130,100,'%','fontSize')}
+    ${rr('Display Size',80,130,100,'%','dispSize')}
+    ${sr('Default Weight',['300 Light','400 Regular','500 Medium','600 SemiBold'],'400 Regular','fontW')}
+    ${tog('High contrast text','','highContrast')}
+  </div>`,
+
+'sb-layout':()=>`<div class="st"><span class="dot"></span>Status Bar Layout</div><div class="ss">Top system bar with time, battery, signal</div>
+  <div class="card"><div class="ct">📶 Layout</div>
+    ${sr('Time Position',['Left','Center','Right','Hidden'],'Left','sbTimePos')}
+    ${rr('Status Bar Height',20,52,28,'dp','sbH')}
+    ${tog('Transparent status bar','Blends with wallpaper','sbTransp')}
+    ${tog('Show network speed','▲▼ upload/download overlay','showNetSpd')}
+    ${tog('Show carrier name','e.g. Airtel 4G','showCarrier')}
+    ${tog('High visibility text','Outline or shadow','sbHighVis')}
+    ${tog('Color status bar text','Match accent color','sbColorTxt')}
+  </div>`,
+
+'sb-icons':()=>`<div class="st"><span class="dot"></span>Status Icons</div><div class="ss">Control which icons appear in the status bar</div>
+  <div class="card"><div class="ct">📡 Visibility</div>
+    ${tog('WiFi icon','','sbWifi')}${tog('Mobile signal','','sbMobile')}
+    ${tog('Battery icon','','sbBat')}${tog('Battery percentage','','showBatPct')}
+    ${tog('Alarm icon','','sbAlarm')}${tog('Bluetooth','','sbBT')}
+    ${tog('DND icon','','sbDND')}${tog('Hotspot icon','','sbHotspot')}
+    ${tog('VPN icon','','sbVPN')}${tog('NFC icon','','sbNFC')}
+  </div>`,
+
+'sb-battery':()=>`<div class="st"><span class="dot"></span>Battery Icon</div><div class="ss">Style of the battery indicator</div>
+  <div class="card"><div class="ct">🔋 Style</div>
+    ${sr('Battery Style',['Classic pill','Circular %','Text only','MIUI HyperOS','Capsule','Hidden'],'Classic pill','batStyle')}
+    ${cr('batclr','Battery Full Color','#00e07f','')}${cr('batlow','Battery Low Color','#ff3b3b','')}
+    ${tog('Color-code by level','Green→Yellow→Red','batColorLevel')}
+    ${tog('Animate charging','Pulsing when charging','batAnim')}
+  </div>`,
+
+'lock-clock':()=>`<div class="st"><span class="dot"></span>Lock Screen Clock</div><div class="ss">Clock shown on the lock screen</div>
+  <div class="card"><div class="ct">🕐 Clock Style</div>
+    ${sr('Clock Format',['Large digital','Analog','Dual tone','Outlined','Word clock','Minimal'],'Large digital','lockClockStyle')}
+    ${rr('Clock Size',28,90,54,'sp','lockClkSz')}
+    ${sr('Clock Weight',['100 Thin','200 ExtraLight','300 Light','400 Regular','700 Bold'],'200 ExtraLight','lockClkW')}
+    ${tog('Show date below','','lockDate')}
+    ${tog('Show seconds','','lockSeconds')}
+    ${tog('Show weather','','lockWeather')}
+    ${tog('Show next alarm','','lockAlarm')}
+  </div>
+  <div class="card"><div class="ct">🎨 Clock Colors</div><div class="g2">${cr('lclkclr','Clock Color',T.text,'')}${cr('ldateclr','Date Color',T.text2,'')}</div></div>`,
+
+'lock-notifs':()=>`<div class="st"><span class="dot"></span>Lock Screen Notifications</div><div class="ss">Notifications shown on lock screen</div>
+  <div class="card"><div class="ct">🔔 Visibility</div>
+    ${tog('Show notifications','','lockNotifs')}
+    ${tog('Show notification content','Hide for privacy','lockNotifContent')}
+    ${tog('Group by app','','lockNotifGroup')}
+    ${sr('Max notifications shown',['1','2','3','4','5','Unlimited'],'3','lockNotifMax')}
+  </div>`,
+
+'lock-shortcuts':()=>`<div class="st"><span class="dot"></span>Lock Screen Shortcuts</div><div class="ss">Quick access buttons at bottom of lock screen</div>
+  <div class="card"><div class="ct">⚡ Shortcuts</div>
+    ${sr('Left Shortcut',['Torch','Camera','Calculator','Voice Memo','None'],'Torch','lockLeft')}
+    ${sr('Right Shortcut',['Camera','Torch','Voice Memo','Timer','Alarm','None'],'Camera','lockRight')}
+    ${tog('Show shortcut labels','','lockShortLbl')}
+  </div>`,
+
+'lock-unlock':()=>`<div class="st"><span class="dot"></span>Unlock Animation</div><div class="ss">Animation when unlocking the phone</div>
+  <div class="card"><div class="ct">🔓 Animation</div>
+    ${sr('Style',['Ripple','Circle expand','Fade','Sparkle','Particles','Bounce','None'],'Ripple','unlockAnim')}
+    ${rr('Animation Speed',50,200,100,'%','unlockAnimSpd')}
+    ${cr('unlockclr','Animation Color',T.accent,'')}
+  </div>`,
+
+'lock-face':()=>`<div class="st"><span class="dot"></span>Face & Fingerprint</div><div class="ss">Biometric unlock appearance</div>
+  <div class="card"><div class="ct">👆 Fingerprint</div>
+    ${tog('Show fingerprint icon','','lockFP')}
+    ${sr('Fingerprint Icon Style',['Classic','Minimal','Hidden'],'Classic','fpStyle')}
+    ${cr('fpclr','Icon Color','rgba(255,255,255,.3)','')}
+  </div>
+  <div class="card"><div class="ct">😊 Face Unlock</div>
+    ${tog('Face unlock animation','','faceAnim')}
+    ${sr('Face Unlock Style',['Standard','Ripple','None'],'Standard','faceStyle')}
+  </div>`,
+
+'notif-card':()=>`<div class="st"><span class="dot"></span>Notification Cards</div><div class="ss">Style for individual notification cards</div>
+  <div class="card"><div class="ct">🔔 Card Style</div>
+    ${sr('Style',['Floating card','Pill (compact)','Full width','Material You','Minimal'],'Floating card','notifStyle')}
+    ${cr('notifbg','Card Background',T.notif,'notif')}
+    ${rr('Corner Radius',0,28,14,'dp','notifRadius')}
+    ${rr('Background Blur',0,30,12,'px','notifBlur')}
+    ${tog('Show app icon','','notifIcon')}
+    ${tog('Group by app','','notifGrouped')}
+    ${tog('Action buttons','Reply, Mark read etc','notifActions')}
+  </div>`,
+
+'notif-banner':()=>`<div class="st"><span class="dot"></span>Heads-up Banner</div><div class="ss">Pop-up banner for incoming notifications</div>
+  <div class="card"><div class="ct">📢 Banner</div>
+    ${tog('Enable heads-up','','notifHeadsUp')}
+    ${sr('Position',['Top','Bottom'],'Top','notifBannerPos')}
+    ${rr('Banner Duration',1,10,3,'s','notifDuration')}
+    ${cr('bannerbg','Banner Color',T.notif,'')}
+  </div>`,
+
+'notif-shade':()=>`<div class="st"><span class="dot"></span>Notification Shade</div><div class="ss">The pull-down notification panel</div>
+  <div class="card"><div class="ct">📋 Shade Style</div>
+    ${cr('shadebg','Shade Background',T.notif,'')}
+    ${rr('Shade Blur',0,30,14,'px','shadeBlur')}
+    ${tog('Translucent shade','See wallpaper through','shadeTransp')}
+    ${tog('Colored notification cards','','notifColored')}
+  </div>`,
+
+'qs-tiles':()=>`<div class="st"><span class="dot"></span>Quick Tiles Layout</div><div class="ss">Quick settings tile grid and arrangement</div>
+  <div class="card"><div class="ct">⚡ Grid</div>
+    ${sr('Columns',['3','4','5','6'],'4','qsCols')}
+    ${sr('Rows (collapsed)',['1','2','3'],'2','qsRows')}
+    ${tog('Compact tile layout','Smaller tiles','qsCompact')}
+    ${tog('Show tile labels','','qsLabels')}
+    ${tog('Color active tiles','With accent color','qsTileColor')}
+  </div>`,
+
+'qs-style':()=>`<div class="st"><span class="dot"></span>Quick Settings Style</div><div class="ss">Visual style of the quick settings panel</div>
+  <div class="card"><div class="ct">🎨 Panel</div>
+    ${cr('qsbg','Panel Background',T.card,'')}
+    ${rr('Panel Blur',0,30,14,'px','qsBlur')}
+    ${rr('Tile Corner Radius',0,20,10,'px','qsTileR')}
+    ${tog('Transparent panel','','qsTransp')}
+    ${tog('Show user avatar','','qsUser')}
+    ${tog('Show brightness slider','','qsBright')}
+  </div>`,
+
+'qs-media':()=>`<div class="st"><span class="dot"></span>Media Player</div><div class="ss">Music player in quick settings panel</div>
+  <div class="card"><div class="ct">🎵 Player</div>
+    ${tog('Show media player','','qsMedia')}
+    ${sr('Style',['Compact bar','Full card','Mini pill'],'Compact bar','qsMediaStyle')}
+    ${cr('mediabg','Player Background',T.card,'')}
+    ${tog('Show album art','','qsAlbumArt')}
+    ${tog('Lyrics overlay','HyperOS feature','qsLyrics')}
+  </div>`,
+
+'anim-speed':()=>`<div class="st"><span class="dot"></span>Animation Speed</div><div class="ss">Control how fast animations play</div>
+  <div class="card"><div class="ct">⚡ Speed</div>
+    ${sr('Global Speed',['0.5× Slow','1× Normal','1.5× Fast','2× Very Fast','Off (instant)'],'1× Normal','animSpeed')}
+    ${rr('Transition Duration',100,800,300,'ms','animDur')}
+    ${tog('Reduce motion','Accessibility: minimal animations','reduceMotion')}
+  </div>`,
+
+'anim-app':()=>`<div class="st"><span class="dot"></span>App Transitions</div><div class="ss">How apps open and close</div>
+  <div class="card"><div class="ct">🎭 Open/Close</div>
+    ${sr('App Open',['Slide up','Zoom in','Fade','Explode','Flip','None'],'Slide up','openAnim')}
+    ${sr('App Close',['Slide down','Zoom out','Fade','None'],'Slide down','closeAnim')}
+    ${sr('App Switch',['Slide left','Card stack','Fade','Cube'],'Slide left','switchAnim')}
+  </div>`,
+
+'anim-scroll':()=>`<div class="st"><span class="dot"></span>Scroll & Physics</div><div class="ss">Feel of scrolling throughout the system</div>
+  <div class="card"><div class="ct">📜 Scroll</div>
+    ${sr('Scroll Style',['Spring (bouncy)','Linear','Gravity','iOS-like'],'Spring (bouncy)','scrollStyle')}
+    ${rr('Fling speed',50,200,100,'%','flingSpd')}
+    ${tog('Launcher parallax','Icons shift on tilt','parallax')}
+    ${tog('Icon press animation','Scale bounce on tap','iconPress')}
+    ${tog('Ripple touch effect','','ripple')}
+  </div>`,
+
+'anim-misc':()=>`<div class="st"><span class="dot"></span>Misc Effects</div><div class="ss">Other visual effects and animations</div>
+  <div class="card"><div class="ct">✨ Effects</div>
+    ${tog('Notification pop animation','','notifPopAnim')}
+    ${tog('Screen on animation','','screenOnAnim')}
+    ${tog('Charging animation','Pulse when plugged in','chargeAnim')}
+    ${tog('App install animation','','installAnim')}
+    ${tog('Fingerprint ripple','','fpRipple')}
+  </div>`,
+
+'sound-ring':()=>`<div class="st"><span class="dot"></span>Ringtone</div><div class="ss">Sound for incoming calls</div>
+  <div class="card"><div class="ct">📳 Ringtone</div>
+    ${uz('Ringtone (MP3/OGG/WAV/FLAC/M4R)','audio/*','loadRing')}
+    ${rr('Volume',0,100,80,'%','ringVol')}
+    ${tog('Gradually increase volume','Gets louder over time','ringFade')}
+    ${tog('Vibrate with ring','','ringVib')}
+  </div>`,
+
+'sound-notif':()=>`<div class="st"><span class="dot"></span>Notification Sound</div><div class="ss">Sound for all notifications</div>
+  <div class="card"><div class="ct">🔔 Notification</div>
+    ${uz('Notification Sound (MP3/OGG)','audio/*','loadNotifSound')}
+    ${rr('Volume',0,100,70,'%','notifVol')}
+    ${tog('Per-app custom sounds','','perAppSound')}
+  </div>`,
+
+'sound-sys':()=>`<div class="st"><span class="dot"></span>System Sounds</div><div class="ss">UI interaction sounds</div>
+  <div class="card"><div class="ct">🔊 System</div>
+    ${tog('Touch/tap sounds','','touchSound')}
+    ${tog('Screen lock sound','','lockSound')}
+    ${tog('Charging connected','','chargeSound')}
+    ${tog('Screenshot sound','','ssSound')}
+    ${tog('App install sound','','installSound')}
+    ${tog('Low battery alert sound','','lowBatSound')}
+  </div>`,
+
+'sound-keyboard':()=>`<div class="st"><span class="dot"></span>Keyboard Sound</div><div class="ss">Sound while typing</div>
+  <div class="card"><div class="ct">⌨ Keyboard</div>
+    ${tog('Keyboard click sound','','kbSound')}
+    ${rr('Keyboard volume',0,100,60,'%','kbVol')}
+    ${sr('Sound type',['Classic click','Soft tap','Pop','Custom'],'Classic click','kbSoundType')}
+    ${tog('Keyboard haptic feedback','Vibration on key press','kbVibrate')}
+  </div>`,
+
+'sound-vibration':()=>`<div class="st"><span class="dot"></span>Vibration</div><div class="ss">Haptic feedback patterns</div>
+  <div class="card"><div class="ct">📳 Vibration</div>
+    ${sr('Call vibration pattern',['Standard','Double tap','Escalating','Buzz','Custom'],'Standard','vibPattern')}
+    ${rr('Vibration intensity',1,5,3,'','vibInt')}
+    ${tog('Vibrate on ring','','vibRing')}
+    ${tog('Vibrate on notification','','vibNotif')}
+    ${tog('Haptic feedback on UI','','hapticUI')}
+  </div>`,
+
+'aod-clock':()=>`<div class="st"><span class="dot"></span>AOD Clock</div><div class="ss">Clock on Always-on Display</div>
+  <div class="card"><div class="ct">🕐 AOD Clock</div>
+    ${sr('Style',['Digital','Analog','Minimal line','Wordclock','Custom'],'Digital','aodClkStyle')}
+    ${rr('Size',20,60,36,'sp','aodClkSz')}
+    ${cr('aodclkclr','Clock Color','#ffffff','')}
+    ${tog('Show date','','aodDate')}
+    ${tog('Show battery','','aodBat')}
+    ${tog('Show steps','Fitness info','aodSteps')}
+  </div>`,
+
+'aod-style':()=>`<div class="st"><span class="dot"></span>AOD Style</div><div class="ss">Overall look of the AOD screen</div>
+  <div class="card"><div class="ct">🎨 Appearance</div>
+    ${sr('AOD Theme',['Minimal','Classic MIUI','Animated','Artboard','Custom'],'Minimal','aodTheme')}
+    ${rr('Brightness',1,50,15,'%','aodBright')}
+    ${tog('Animated elements','Moving effects on AOD','aodAnim')}
+    ${tog('Signature text','Show custom text','aodSig')}
+  </div>`,
+
+'aod-notifs':()=>`<div class="st"><span class="dot"></span>AOD Notifications</div><div class="ss">Notification indicators on AOD</div>
+  <div class="card"><div class="ct">🔔 AOD Notifs</div>
+    ${tog('Show notification dots','','aodNotifDots')}
+    ${tog('Show notification count','','aodNotifCount')}
+    ${tog('Show app icons','','aodNotifIcons')}
+    ${sr('Max icons shown',['3','5','8','All'],'5','aodNotifMax')}
+  </div>`,
+
+'export-main':()=>`<div class="st"><span class="dot"></span>Export Theme</div><div class="ss">Download your theme for Redmi devices</div>
+  <div class="card"><div class="ct">📝 Theme Info</div><div class="g2">
+    <div class="cg"><div class="cl">Author</div><input class="ti" id="ex-author" placeholder="Your name"></div>
+    <div class="cg"><div class="cl">Version</div><input class="ti" id="ex-ver" value="1.0.0"></div>
+    <div class="cg"><div class="cl">Description</div><input class="ti" id="ex-desc" placeholder="Short description"></div>
+    <div class="cg"><div class="cl">Target OS</div><select class="sel" id="ex-os"><option>MIUI 14</option><option>HyperOS 1.0</option><option>MIUI 13</option><option>MIUI 12.5</option></select></div>
+  </div></div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <div style="display:flex;align-items:center;gap:11px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .18s" onclick="exportMTZ()" onmouseenter="this.style.borderColor='var(--red)'" onmouseleave="this.style.borderColor='var(--bd2)'">
+      <div style="font-size:22px">📦</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Export .mtz Package</div><div style="font-size:11px;color:var(--t3)">Install via Mi Themes app or ADB</div></div><div style="background:rgba(255,59,59,.14);color:var(--red);font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700">.mtz</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .18s" onclick="exportJSON()" onmouseenter="this.style.borderColor='var(--cy)'" onmouseleave="this.style.borderColor='var(--bd2)'">
+      <div style="font-size:22px">📄</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Export JSON Config</div><div style="font-size:11px;color:var(--t3)">Save settings — re-import to continue editing</div></div><div style="background:rgba(0,212,255,.12);color:var(--cy);font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700">.json</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .18s" onclick="importTheme()" onmouseenter="this.style.borderColor='var(--gr)'" onmouseleave="this.style.borderColor='var(--bd2)'">
+      <div style="font-size:22px">⬆️</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Import Theme</div><div style="font-size:11px;color:var(--t3)">Load previously exported .json theme</div></div><div style="background:rgba(0,224,127,.12);color:var(--gr);font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700">Import</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .18s" onclick="shareLink()" onmouseenter="this.style.borderColor='var(--yw,#ffd60a)'" onmouseleave="this.style.borderColor='var(--bd2)'">
+      <div style="font-size:22px">🔗</div><div style="flex:1"><div style="font-weight:600;font-size:13px">Share Link</div><div style="font-size:11px;color:var(--t3)">Generate a shareable URL</div></div><div style="background:rgba(255,214,10,.1);color:#ffd60a;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700">URL</div>
+    </div>
+  </div>`,
+
+'export-info':()=>`<div class="st"><span class="dot"></span>Theme Info</div><div class="ss">Metadata included with the theme package</div>
+  <div class="card"><div class="ct">📋 Details</div><div class="g2">
+    <div class="cg"><div class="cl">Theme Name</div><input class="ti" value="My Theme"></div>
+    <div class="cg"><div class="cl">Author</div><input class="ti" placeholder="Your name"></div>
+    <div class="cg"><div class="cl">Version</div><input class="ti" value="1.0.0"></div>
+    <div class="cg"><div class="cl">Website</div><input class="ti" placeholder="https://..."></div>
+    <div class="cg"><div class="cl">Min MIUI Version</div><select class="sel"><option>MIUI 12</option><option>MIUI 12.5</option><option>MIUI 13</option><option>MIUI 14</option><option>HyperOS</option></select></div>
+    <div class="cg"><div class="cl">Category</div><select class="sel"><option>Dark</option><option>Light</option><option>Colorful</option><option>Minimal</option><option>Custom</option></select></div>
+  </div></div>`,
+};
+
+function loadEd(key,navEl){
+  curKey=key;
+  document.querySelectorAll('#sb .ni').forEach(n=>n.classList.remove('on'));
+  if(navEl) navEl.classList.add('on');
+  const fn=ED[key];
+  document.getElementById('ep').innerHTML=fn?fn():`<div class="st">${key}</div>`;
+}
+
+// ═══════════════════════════════════
+// CONTROL HANDLERS
+// ═══════════════════════════════════
+function pickC(row){row.querySelector('input[type=color]').click()}
+function onCol(inp,id,sk){
+  const v=inp.value.toUpperCase();
+  document.querySelectorAll('#cs-'+id).forEach(e=>e.style.background=v);
+  document.querySelectorAll('#cv-'+id).forEach(e=>e.textContent=v);
+  if(sk==='bg') T.bg=v;
+  else if(sk==='text') T.text=v;
+  else if(sk==='text2') T.text2=v;
+  else if(sk==='accent') T.accent=v;
+  else if(sk==='iconBg') T.iconBg=v;
+  else if(sk==='dock') T.dock=v;
+  else if(sk==='card') T.card=v;
+  else if(sk==='notif') T.notif=v;
+  applyTheme();
+}
+function onRng(inp,unit,key){
+  document.querySelectorAll('#rv-'+key).forEach(e=>e.textContent=inp.value+unit);
+  const v=parseInt(inp.value);
+  if(key==='iconR'){T.iconShape=v+'%';applyTheme()}
+  else if(key==='iconSize'){T.iconSize=v;applyTheme()}
+  else if(key==='clockSize'){T.clockSize=v;applyTheme()}
+  else if(key==='dockR'){T.dockRadius=v;applyTheme()}
+  else if(key==='sbH'){T.sbHeight=v+'px';applyTheme()}
+  else T[key]=v;
+}
+function onSel(sel,key){T[key]=sel.value;applyTheme()}
+function onTog(el,key){el.classList.toggle('on');T[key]=el.classList.contains('on');applyTheme()}
+
+// Presets
+const PRESETS={
+  midnight:{bg:'#0b1120',wall:'linear-gradient(170deg,#0e1a35,#152545,#0a1220)'},
+  ocean:{bg:'#051524',wall:'linear-gradient(160deg,#051524,#0a2a4a,#0d3b6e)'},
+  forest:{bg:'#061209',wall:'linear-gradient(160deg,#061209,#0d2e14,#0a3d1c)'},
+  cherry:{bg:'#140007',wall:'linear-gradient(160deg,#140007,#3d0020,#8b0039)'},
+  slate:{bg:'#0d1018',wall:'linear-gradient(160deg,#0d1018,#161c28,#0e1520)'},
+  warm:{bg:'#1a1208',wall:'linear-gradient(160deg,#1a1208,#3a2810,#604020)'},
+  pureblack:{bg:'#000000',wall:'#000000'},
+  light:{bg:'#f4f6f9',wall:'linear-gradient(160deg,#e8f4fd,#dbeafe,#f0f9ff)'},
+};
+function applyPreset(v){const p=PRESETS[v];if(!p)return;T.bg=p.bg;T.wall=p.wall;applyTheme()}
+function setAccent(v){T.accent=v;setCSS('--pt-accent',v);applyTheme()}
+function setWHome(v){T.wall=v;applyTheme()}
+function setWLock(v){T.wallLock=v==='same'?T.wall:v}
+function setShape(r,el){
+  T.iconShape=r;
+  document.querySelectorAll('.sho').forEach(e=>e.classList.remove('on'));
+  if(el)el.classList.add('on');
+  applyTheme();
+}
+
+// File handlers
+function wHome(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{T.wall=`url(${e.target.result})`;T.wall+=' center/cover no-repeat';applyTheme()};r.readAsDataURL(f)}
+function wLock(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{T.wallLock=`url(${e.target.result}) center/cover no-repeat`};r.readAsDataURL(f)}
+function loadFont(inp){alert('Font loaded: '+inp.files[0]?.name+'\n(In production this would apply to the phone preview)')}
+function loadPack(inp){alert('Icon pack loaded: '+inp.files[0]?.name)}
+function loadCustomIcon(inp){alert('Custom icon set for selected app: '+inp.files[0]?.name)}
+function loadRing(inp){alert('Ringtone set: '+inp.files[0]?.name)}
+function loadNotifSound(inp){alert('Notification sound set: '+inp.files[0]?.name)}
+
+// Util
+function toHex(c){
+  if(!c||typeof c!=='string')return'#111827';
+  if(c.startsWith('#'))return c.slice(0,7);
+  const m=c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if(m)return'#'+[m[1],m[2],m[3]].map(n=>parseInt(n).toString(16).padStart(2,'0')).join('');
+  return'#111827';
+}
+
+// Export/Import
+function buildData(){
+  return{name:document.getElementById('themeName').value||'My Theme',
+    device:document.getElementById('devSel').value,version:'1.0.0',
+    createdAt:new Date().toISOString(),theme:JSON.parse(JSON.stringify(T))};
+}
+function exportMTZ(){
+  const d=buildData(),name=d.name.replace(/\s+/g,'-').toLowerCase();
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/octet-stream'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name+'.mtz';a.click();
+}
+function exportJSON(){
+  const d=buildData(),name=d.name.replace(/\s+/g,'-').toLowerCase();
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name+'-theme.json';a.click();
+}
+function importTheme(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json,.mtz';
+  inp.onchange=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();r.onload=ev=>{
+      try{
+        const d=JSON.parse(ev.target.result);
+        if(d.theme){Object.assign(T,d.theme)}
+        if(d.name)document.getElementById('themeName').value=d.name;
+        applyTheme();railGo(document.querySelector('.rb.on')||document.querySelector('.rb'),'colors');
+        alert('✅ Theme imported: '+(d.name||'Unknown'));
+      }catch{alert('❌ Invalid theme file')}
+    };r.readAsText(f);
+  };inp.click();
+}
+function shareLink(){const h=btoa(JSON.stringify({bg:T.bg,accent:T.accent}));prompt('🔗 Share link:','https://miui.studio/t/'+h.slice(0,20))}
+
+// Mobile nav
+function mNav(btn,sec){
+  document.querySelectorAll('.mbn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('.mob-sec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('m-'+sec).classList.add('on');
+  if(sec==='colors'){document.getElementById('mc-global').innerHTML=ED['colors-global']();document.getElementById('mc-accent').innerHTML=ED['colors-accent']();document.getElementById('mc-ui').innerHTML=ED['colors-ui']();document.getElementById('mc-dark').innerHTML=ED['colors-dark']();}
+  if(sec==='wall'){document.getElementById('mw-home').innerHTML=ED['wall-home']();document.getElementById('mw-lock').innerHTML=ED['wall-lock']();document.getElementById('mw-aod').innerHTML=ED['wall-aod']();}
+  if(sec==='icons'){document.getElementById('mi-shape').innerHTML=ED['icons-shape']();document.getElementById('mi-pack').innerHTML=ED['icons-pack']();document.getElementById('mi-custom').innerHTML=ED['icons-custom']();document.getElementById('mi-dock').innerHTML=ED['icons-dock']();}
+  if(sec==='more'){document.getElementById('mm-fonts').innerHTML=ED['fonts-sys']();document.getElementById('mm-status').innerHTML=ED['sb-layout']();document.getElementById('mm-lock').innerHTML=ED['lock-clock']();document.getElementById('mm-notifs').innerHTML=ED['notif-card']();document.getElementById('mm-qs').innerHTML=ED['qs-style']();document.getElementById('mm-anim').innerHTML=ED['anim-speed']();document.getElementById('mm-sound').innerHTML=ED['sound-ring']();}
+  if(sec==='export'){document.getElementById('m-export').innerHTML=ED['export-main']();}
+}
+function mSub(btn,prefix,key){
+  btn.closest('.mob-sub-tabs').querySelectorAll('.mst').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  const par=document.getElementById(prefix+'-'+key).parentElement;
+  [...par.children].forEach(c=>c.style.display='none');
+  document.getElementById(prefix+'-'+key).style.display='block';
+}
+
+// Init
+function init(){
+  railGo(document.querySelector('.rb'),'colors');
+  applyTheme();
+  setInterval(renderAll,60000);
+}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
